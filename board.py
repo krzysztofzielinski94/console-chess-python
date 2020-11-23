@@ -16,7 +16,7 @@ class Board:
         for i in range(self.size):
             self.board[0][i] = EmptyField(header[i], [0, i])
             self.board[self.size-1][i] = EmptyField(header[i], [i, self.size-1]) 
-        # Body
+
         for i in range(1, self.size-1, 1):
             self.board[i][0] = EmptyField((self.size -1) - i, [i, 0])
             self.board[i][self.size-1] = EmptyField((self.size -1) - i, [i, self.size-1])
@@ -39,8 +39,8 @@ class Board:
         self.board[8][5] = King('W', [8,4])
         
         for i in range(1, self.size-1, 1):
-            self.board[2][i] = Pawn('B', 1)
-            self.board[7][i] = Pawn('W', 1)
+            self.board[2][i] = Pawn('B', [2, i])
+            self.board[7][i] = Pawn('W', [7, i])
   
     def show(self):
         for i in range(self.size):
@@ -66,30 +66,26 @@ class Board:
         vertical   = ['8', '7', '6', '5', '4', '3', '2', '1']
         horizontal = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 
-        x = vertical[move_x]
-        y = horizontal[move_y]
+        x = vertical[move_x - 1]
+        y = horizontal[move_y - 1]
        
-        return x + y
+        return y + x
 
     def update_move(self, move_from, move_to, player):
         mf = self.field_to_array(move_from)
         mt = self.field_to_array(move_to)
 
-        print ('Piece (From): ', self.board[mf[0]][mf[1]])
-        print ('Piece (To): ', self.board[mt[0]][mt[1]])
-        
-        if self.board[mf[0]][mf[1]].can_move(mf, mt, player) == False:
+        if mt not in self.check_move_from(move_from, player):
             print ('Cannot update the move! Try again...')
             return False
-        else:
-            self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], self.board[mt[0]][mt[1]]
-            return True
+        
+        self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], self.board[mt[0]][mt[1]]
+        self.board[mt[0]][mt[1]].update_status(mt)
+        return True
 
     def check_move_from(self, move, player):
         mf = self.field_to_array(move)
-        if (self.board[mf[0]][mf[1]].possible_moves(mf, player)) == None:
-            print ('Cannot update the move! Try again...')
-            return False 
+        return self.board[mf[0]][mf[1]].possible_moves(mf, player)
 
     def check_move_to(self):
         pass
