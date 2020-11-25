@@ -1,5 +1,6 @@
 from os import system
 from board import Board
+from pieces import *
 
 def start_game():
     system('cls')

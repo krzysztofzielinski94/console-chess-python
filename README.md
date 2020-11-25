@@ -1,7 +1,8 @@
 # Chess powered by Python - console version
-## console-chess-python**
+## console-chess-python
 
 In this repository you can find the example solution for chess game in Python
+**The game is in drafting phase**
 
 ## Installing 
 * Download the project

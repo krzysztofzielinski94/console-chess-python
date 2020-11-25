@@ -40,7 +40,7 @@ class Board:
         
         for i in range(1, self.size-1, 1):
             self.board[2][i] = Pawn('B', [2, i])
-            self.board[7][i] = Pawn('W', [7, i])
+            #self.board[5][i] = Pawn('W', [5, i])
   
     def show(self):
         for i in range(self.size):
@@ -75,7 +75,11 @@ class Board:
         mf = self.field_to_array(move_from)
         mt = self.field_to_array(move_to)
 
-        if mt not in self.check_move_from(move_from, player):
+        piece_moves = self.check_move_from(move_from, player)
+        board_moves = self.check_move_board(piece_moves, player)
+        #kill_moves  = self.check_move_kill(board_moves, player)
+
+        if mt not in board_moves:
             print ('Cannot update the move! Try again...')
             return False
         
@@ -85,7 +89,27 @@ class Board:
 
     def check_move_from(self, move, player):
         mf = self.field_to_array(move)
-        return self.board[mf[0]][mf[1]].possible_moves(mf, player)
+        return self.board[mf[0]][mf[1]].possible_moves(mf, player)   
+
+    def check_move_board(self, moves, player):
+        type_pieces = (Rook, King, Knight, Queen, Bishop, Pawn)
+        out_moves = list()
+        kill_moves = list()
+        for move in moves:
+            for pm in move:
+                if isinstance(self.board[pm[0]][pm[1]], type_pieces):
+                    if self.board[pm[0]][pm[1]].get_player() != player:
+                        kill_moves.append(pm)
+                    break
+                else:
+                    out_moves.append(pm)
+
+        print ('kill moves:', kill_moves) 
+        print ('out moves:', out_moves) 
+        return out_moves 
+    
+    def check_move_kill(self, move, player):
+        pass 
 
     def check_move_to(self):
         pass
