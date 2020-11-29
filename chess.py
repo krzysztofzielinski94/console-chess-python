@@ -1,4 +1,5 @@
 from os import system
+from termcolor import colored
 from board import Board
 from pieces import *
 
@@ -10,11 +11,14 @@ def start_game():
     while game_board.game_over() != True:
         game_board.show()
         player = 'W' if turn % 2 else 'B'
-        print ('Player:', player)
-        move_from = input('Move From: ')
-        move_to = input('Move To: ')
+        if player == 'W':
+            print (colored('WHITE', 'yellow'), 'TURN')
+        else:
+            print (colored('BLACK', 'red'), 'TURN')
+        from_move   = input('ENTER MOVE FROM: ')
+        to_move     = input('ENTER MOVE TO: ')
         
-        if game_board.update_move(move_from, move_to, player):
+        if game_board.update_move(from_move, to_move, player):
             turn += 1
 
 if __name__ == '__main__':

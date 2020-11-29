@@ -1,4 +1,5 @@
 from pieces import *
+from termcolor import colored
 
 class Board:
     def __init__(self):
@@ -7,19 +8,19 @@ class Board:
         for i in range(self.size):
             self.board.append(list())
             for _ in range(self.size):
-                self.board[i].append(EmptyField('-', [i, _]))
-        
+                self.board[i].append(EmptyField('None', [i, _], '-'))
+    
         self.create_pieces()
 
     def create_pieces(self):
         header = 'XABCDEFGHX'
         for i in range(self.size):
-            self.board[0][i] = EmptyField(header[i], [0, i])
-            self.board[self.size-1][i] = EmptyField(header[i], [i, self.size-1]) 
+            self.board[0][i] = EmptyField('None', [0, i], header[i])
+            self.board[self.size-1][i] = EmptyField('None', [i, self.size-1], header[i]) 
 
         for i in range(1, self.size-1, 1):
-            self.board[i][0] = EmptyField((self.size -1) - i, [i, 0])
-            self.board[i][self.size-1] = EmptyField((self.size -1) - i, [i, self.size-1])
+            self.board[i][0] = EmptyField('None', [i, 0], (self.size -1) - i)
+            self.board[i][self.size-1] = EmptyField('None', [i, self.size-1], (self.size -1) - i)
         
         self.board[1][1] = Rook('B', [1, 1])
         self.board[1][8] = Rook('B', [1, 8])
@@ -40,12 +41,17 @@ class Board:
         
         for i in range(1, self.size-1, 1):
             self.board[2][i] = Pawn('B', [2, i])
-            #self.board[5][i] = Pawn('W', [5, i])
+            self.board[7][i] = Pawn('W', [7, i])
   
     def show(self):
         for i in range(self.size):
             for j in range(self.size):
-                print (f'{self.board[i][j]}', end ='  ')
+                if self.board[i][j].get_player() == 'W':
+                    print (colored(f'{self.board[i][j]}', 'yellow'), end ='  ')
+                elif self.board[i][j].get_player() == 'B':
+                    print (colored(f'{self.board[i][j]}', 'red'), end ='  ')
+                else:
+                    print (colored(f'{self.board[i][j]}', 'white'), end ='  ')
             print ('')
         print ('')
 
@@ -77,7 +83,6 @@ class Board:
 
         piece_moves = self.check_move_from(move_from, player)
         board_moves = self.check_move_board(piece_moves, player)
-        #kill_moves  = self.check_move_kill(board_moves, player)
 
         if mt not in board_moves:
             print ('Cannot update the move! Try again...')
@@ -89,7 +94,7 @@ class Board:
 
     def check_move_from(self, move, player):
         mf = self.field_to_array(move)
-        return self.board[mf[0]][mf[1]].possible_moves(mf, player)   
+        return self.board[mf[0]][mf[1]].get_possible_moves()   
 
     def check_move_board(self, moves, player):
         type_pieces = (Rook, King, Knight, Queen, Bishop, Pawn)
@@ -104,15 +109,9 @@ class Board:
                 else:
                     out_moves.append(pm)
 
-        print ('kill moves:', kill_moves) 
-        print ('out moves:', out_moves) 
+        #print ('kill moves:', kill_moves) 
+        #print ('out moves:', out_moves) 
         return out_moves 
-    
-    def check_move_kill(self, move, player):
-        pass 
-
-    def check_move_to(self):
-        pass
 
     def game_over(self):
         return False

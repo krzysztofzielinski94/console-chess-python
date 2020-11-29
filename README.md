@@ -2,6 +2,17 @@
 ## console-chess-python
 
 In this repository you can find the example solution for chess game in Python
+
+**GAME UNDER CONSTRUCTION**
+**TODO**
+* Killing Pieces
+* Check 
+* Checkmate
+* Small Castle
+* Big Castle
+* En passant
+* and other rules which I don't know yet 
+
 **The game is in drafting phase**
 
 ## Installing 
