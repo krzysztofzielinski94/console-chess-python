@@ -4,7 +4,7 @@
 In this repository you can find the example solution for chess game in Python
 
 **GAME UNDER CONSTRUCTION**
-**TODO**
+**#TODO**
 * Killing Pieces
 * Check 
 * Checkmate
