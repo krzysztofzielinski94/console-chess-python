@@ -2,8 +2,8 @@
 ## console-chess-python
 
 In this repository you can find the example solution for chess game in Python
+**The game is in drafting phase**
 
-**GAME UNDER CONSTRUCTION**
 **#TODO**
 * Killing Pieces
 * Check 
@@ -13,7 +13,7 @@ In this repository you can find the example solution for chess game in Python
 * En passant
 * and other rules which I don't know yet 
 
-**The game is in drafting phase**
+
 
 ## Installing 
 * Download the project
