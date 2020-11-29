@@ -2,6 +2,7 @@
 ## console-chess-python
 
 In this repository you can find the example solution for chess game in Python
+
 **The game is in drafting phase**
 
 **#TODO**
