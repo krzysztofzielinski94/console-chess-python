@@ -21,6 +21,7 @@ class Piece:
     
     def update_status(self, position):
         self.position = position
+        self.possible_moves = self.get_moves()
     
     def get_player(self):
         return self.color
@@ -132,6 +133,7 @@ class Pawn(Piece):
             self.moves = [[[-1, -1]], [[-1, 0]], [[-1, 1]]]
         else:
             self.moves = [[[1, 1]], [[1, 0]], [[1, -1]]]
+        self.possible_moves = self.get_moves()
 
     def __str__(self):
         return '♙' if self.color == 'W' else '♟'

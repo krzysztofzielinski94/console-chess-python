@@ -60,6 +60,8 @@ class Board:
         move_y = move[1]
         vertical   = ['8', '7', '6', '5', '4', '3', '2', '1']
         horizontal = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+        if move_y not in vertical or move_x not in horizontal:
+            return [0, 0]
 
         x = vertical.index(move_y) + 1
         y = horizontal.index(move_x.lower()) + 1
@@ -78,17 +80,28 @@ class Board:
         return y + x
 
     def update_move(self, move_from, move_to, player):
+        if (len(move_from) != 2) or (len(move_to) != 2):
+            print ('Cannot update the move! Try again...')
+            return False
+        
         mf = self.field_to_array(move_from)
         mt = self.field_to_array(move_to)
 
         piece_moves = self.check_move_from(move_from, player)
-        board_moves = self.check_move_board(piece_moves, player)
-
-        if mt not in board_moves:
+        out_moves, kill_moves = self.check_move_board(piece_moves, player)
+        print ('[Log: All Possible Piece Moves]', piece_moves)
+        print ('[Log: Piece Moves]', out_moves)
+        print ('[Log: Kill Moves]', kill_moves)
+        print ('[Log: Move To]',mt)
+        if (mt not in out_moves) and (mt not in kill_moves):
             print ('Cannot update the move! Try again...')
             return False
+        elif mt in out_moves:
+            self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], self.board[mt[0]][mt[1]]
+        elif mt in kill_moves:
+            empty_field =  EmptyField('None', [mf[0], mf[1]], '-')
+            self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], empty_field
         
-        self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], self.board[mt[0]][mt[1]]
         self.board[mt[0]][mt[1]].update_status(mt)
         return True
 
@@ -109,9 +122,7 @@ class Board:
                 else:
                     out_moves.append(pm)
 
-        #print ('kill moves:', kill_moves) 
-        #print ('out moves:', out_moves) 
-        return out_moves 
+        return out_moves, kill_moves
 
     def game_over(self):
         return False
