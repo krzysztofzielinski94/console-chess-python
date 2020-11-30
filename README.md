@@ -5,16 +5,14 @@ In this repository you can find the example solution for chess game in Python
 
 **The game is in drafting phase**
 
-**#TODO**
-* Killing Pieces
-* Check 
-* Checkmate
-* Small Castle
-* Big Castle
-* En passant
-* and other rules which I don't know yet 
-
-
+| #TODO | DONE |
+| :---: | :---: |
+| Killing Pieces | ✔️ |
+| Check | ❌ |
+| Checkmate | ❌ |
+| Small Castle | ❌ |
+| Big Castle | ❌ |
+| En passant | ❌ |
 
 ## Installing 
 * Download the project
