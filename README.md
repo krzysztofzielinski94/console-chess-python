@@ -3,8 +3,9 @@
 
 In this repository you can find the example solution for chess game in Python
 
-**GAME UNDER CONSTRUCTION**
-**TODO**
+**The game is in drafting phase**
+
+**#TODO**
 * Killing Pieces
 * Check 
 * Checkmate
@@ -13,7 +14,7 @@ In this repository you can find the example solution for chess game in Python
 * En passant
 * and other rules which I don't know yet 
 
-**The game is in drafting phase**
+
 
 ## Installing 
 * Download the project
