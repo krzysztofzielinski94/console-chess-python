@@ -6,7 +6,7 @@ class Piece:
         self.moves = list()
         self.possible_moves = list()
 
-    def get_moves(self):
+    def create_possible_moves(self):
         out_moves = list()
         for direction in self.moves:
             temp = list()
@@ -21,8 +21,11 @@ class Piece:
     
     def update_status(self, position):
         self.position = position
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
     
+    def get_position(self):
+        return self.position
+
     def get_player(self):
         return self.color
 
@@ -48,7 +51,7 @@ class King(Piece):
                         [[0, -1]], [[0, 1]], 
                         [[-1, -1]], [[-1, 0]], [[-1, 1]]]
                     )
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
     
     def __str__(self):
         return '♔' if self.color == 'W' else '♚'
@@ -67,7 +70,7 @@ class Queen(Piece):
                 [[[-i,  i] for i in range(1, 8)]] + 
                 [[[-i, -i] for i in range(1, 8)]]
             )
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
     
     def __str__(self):
         return '♕' if self.color == 'W' else '♛'
@@ -83,7 +86,7 @@ class Rook(Piece):
             [[[0,  i] for i in range(1, 8)]] +
             [[[0, -i] for i in range(1, 8)]]
         )
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
     
     def __str__(self):
         return '♖' if self.color == 'W' else '♜'
@@ -98,7 +101,7 @@ class Bishop(Piece):
             [[[-i,  i] for i in range(1, 8)]] + 
             [[[-i, -i] for i in range(1, 8)]]
         )
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
 
     def __str__(self):
         return '♗' if self.color == 'W' else '♝'
@@ -110,7 +113,7 @@ class Knight(Piece):
         self.moves = (
             [[[-2, -1]], [[-1, -2]], [[1, -2]], [[2, -1]], [[2, 1]], [[1, 2]], [[-2, 1]]]
         )
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
 
     def __str__(self):
         return '♘' if self.color == 'W' else '♞'
@@ -124,7 +127,7 @@ class Pawn(Piece):
             self.moves = [[[-2, 0]], [[-1, -1]], [[-1, 0]], [[-1, 1]]]
         else:
             self.moves = [[[2, 0]], [[1, 1]], [[1, 0]], [[1, -1]]]
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
 
     def update_status(self, position):
         self.moved = True
@@ -133,7 +136,7 @@ class Pawn(Piece):
             self.moves = [[[-1, -1]], [[-1, 0]], [[-1, 1]]]
         else:
             self.moves = [[[1, 1]], [[1, 0]], [[1, -1]]]
-        self.possible_moves = self.get_moves()
+        self.possible_moves = self.create_possible_moves()
 
     def __str__(self):
         return '♙' if self.color == 'W' else '♟'
