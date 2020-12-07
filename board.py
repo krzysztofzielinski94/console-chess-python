@@ -5,6 +5,7 @@ class Board:
     def __init__(self):
         self.size = 10
         self.board = list()
+        self.game_over = False
         for i in range(self.size):
             self.board.append(list())
             for _ in range(self.size):
@@ -37,7 +38,7 @@ class Board:
         self.board[1][4] = Queen('B', [1,4])
         self.board[8][4] = Queen('W', [8,4])
         self.board[1][5] = King('B', [1,5])
-        self.board[8][5] = King('W', [8,4])
+        self.board[8][5] = King('W', [8,5])
         
         #for i in range(1, self.size-1, 1):
         #    self.board[2][i] = Pawn('B', [2, i])
@@ -79,33 +80,55 @@ class Board:
        
         return y + x
 
-    def update_piece_position(self, move_from, move_to, player):
+
+    def check_mate(self, player, enemy_player):
+        e_nk_moves = self.get_enemy_pieces_possible_and_kill_moves(enemy_player)
+        e_neutral_moves = e_nk_moves['neutral_moves']
+        e_killing_moves = e_nk_moves['killing_moves']
+
+        # 1-3 options
+        king = self.get_piece(King, player)
+        king_position = king.get_position()
+        is_check = False
+        for k in e_killing_moves:
+            if king_position in k:
+                is_check = True
+        
+        if (is_check == True):
+            print ('WARNING: CHECK!')
+
+
+    def update_piece_position(self, move_from, move_to, player, enemy_player):
         mf = self.field_to_array(move_from)
         mt = self.field_to_array(move_to)
 
-        # check if was checkmate
-        # self.capture_king('W', 'B') if player == 'W' else self.capture_king('B', 'W')
-        # if was checkmate, then get king moves and pieces which could block check mate
-        # if king moves and pieces moves not exist then game over
-
-        piece_moves = self.get_piece_moves(self.board[mf[0]][mf[1]])
-        out_moves, kill_moves = self.get_piece_possible_and_kill_moves(piece_moves, player)
+        piece_moves   = self.get_piece_moves(self.board[mf[0]][mf[1]])
+        nk_moves      = self.get_piece_possible_and_kill_moves(piece_moves, player)
+        neutral_moves = nk_moves['neutral_moves']
+        killing_moves = nk_moves['killing_moves']
         
         # For Logging purposes!
         #print ('[Log: All Possible Piece Moves]', piece_moves)
-        #print ('[Log: Piece Moves]', out_moves)
+        #print ('[Log: Piece Moves]', neutral_moves)
         #print ('[Log: Kill Moves]', kill_moves)
         #print ('[Log: Move To]', mt)
 
-        if (mt not in out_moves) and (mt not in kill_moves):
+        if (mt not in neutral_moves) and (mt not in killing_moves):
             print ('Cannot update the move! Try again...')
             return False
-        elif mt in out_moves:
+        elif mt in neutral_moves:
             self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], self.board[mt[0]][mt[1]]
-        elif mt in kill_moves:
+        elif mt in killing_moves:
             empty_field =  EmptyField('None', [mf[0], mf[1]], '-')
+            # simple end game
+            if isinstance(self.board[mt[0]][mt[1]], King):
+                self.game_over = True
+            
             self.board[mt[0]][mt[1]], self.board[mf[0]][mf[1]] = self.board[mf[0]][mf[1]], empty_field
             
+            
+
+
         self.board[mt[0]][mt[1]].update_status(mt)
 
         return True
@@ -126,13 +149,6 @@ class Board:
                     pieces.append(self.board[i][j])
         return pieces
 
-    
-
-    def capture_king(self, player, enemy_pieces):
-        enemy_king = self.get_piece(King, enemy_pieces)
-        pieces_possible_and_kill_moves = self.get_pieces_possible_and_kill_moves(player)
-        return False
-        
     def get_piece_moves(self, piece):
         return piece.get_possible_moves()   
 
@@ -144,7 +160,7 @@ class Board:
 
     def get_piece_possible_and_kill_moves(self, moves, player):
         pieces_type = (Rook, King, Knight, Queen, Bishop, Pawn)
-        out_moves = list()
+        neutral_moves = list()
         kill_moves = list()
         for move in moves:
             for pm in move:
@@ -153,9 +169,13 @@ class Board:
                         kill_moves.append(pm)
                     break
                 else:
-                    out_moves.append(pm)
+                    if (pm != []):
+                        neutral_moves.append(pm)
 
-        return out_moves, kill_moves
+        piece_possible_and_kill_moves = dict()
+        piece_possible_and_kill_moves['neutral_moves'] = neutral_moves
+        piece_possible_and_kill_moves['killing_moves'] = kill_moves
+        return piece_possible_and_kill_moves
 
     def get_pieces_possible_and_kill_moves(self, player):
         pieces = self.get_pieces(player)
@@ -166,13 +186,17 @@ class Board:
         
         for moves in pieces_moves:
             temp_move = self.get_piece_possible_and_kill_moves(moves, player)
-            piece_neutral_moves.append(temp_move[0])
-            piece_kill_moves.append(temp_move[1])    
+            piece_neutral_moves.append(temp_move['neutral_moves'])
+            piece_kill_moves.append(temp_move['killing_moves'])    
         
         pieces_possible_and_kill_moves['neutral_moves'] = piece_neutral_moves
-        pieces_possible_and_kill_moves['kill_moves'] = piece_kill_moves
+        pieces_possible_and_kill_moves['killing_moves'] = piece_kill_moves
         
         return pieces_possible_and_kill_moves
 
+    def get_enemy_pieces_possible_and_kill_moves(self, enemy_player):
+        return self.get_pieces_possible_and_kill_moves(enemy_player)
+         
+
     def get_board_status(self):
-        return False
+        return self.game_over

@@ -8,7 +8,8 @@ In this repository you can find the example solution for chess game in Python
 | #TODO | DONE |
 | :---: | :---: |
 | Killing Pieces | ✔️ |
-| Check | ❌ |
+| Check | ✔️ |
+| Limit King moves | ❌ |
 | Checkmate | ❌ |
 | Small Castle | ❌ |
 | Big Castle | ❌ |
