@@ -9,10 +9,10 @@ In this repository you can find the example solution for chess game in Python
 | :---: | :---: |
 | Killing Pieces | ✔️ |
 | Check | ✔️ |
-| Limit King moves | ❌ |
-| Checkmate | ❌ |
+| Checkmate | ✔️ |
 | Small Castle | ❌ |
 | Big Castle | ❌ |
+| Restrict moves | ❌ |
 | Stalemate | ❌ |
 | En passant | ❌ |
 
