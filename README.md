@@ -13,6 +13,7 @@ In this repository you can find the example solution for chess game in Python
 | Checkmate | ❌ |
 | Small Castle | ❌ |
 | Big Castle | ❌ |
+| Stalemate | ❌ |
 | En passant | ❌ |
 
 ## Installing 

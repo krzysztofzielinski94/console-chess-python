@@ -5,6 +5,8 @@ class Piece:
         self.position = position
         self.moves = list()
         self.possible_moves = list()
+        self.moved = False
+        self.active = True
 
     def create_possible_moves(self):
         out_moves = list()
@@ -22,6 +24,7 @@ class Piece:
     def update_status(self, position):
         self.position = position
         self.possible_moves = self.create_possible_moves()
+        self.moved = True
     
     def get_position(self):
         return self.position
@@ -38,6 +41,7 @@ class EmptyField(Piece):
         self.initial = str(value)
         self.moves = list()
         self.possible_moves = list()
+        self.active = False
         
     def __str__(self):
         return self.initial
@@ -49,7 +53,7 @@ class King(Piece):
         self.moves = (
                         [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
                         [[0, -1]], [[0, 1]], 
-                        [[-1, -1]], [[-1, 0]], [[-1, 1]]]
+                        [[1, -1]], [[1, 0]], [[1, 1]]]
                     )
         self.possible_moves = self.create_possible_moves()
     
@@ -87,7 +91,7 @@ class Rook(Piece):
             [[[0, -i] for i in range(1, 8)]]
         )
         self.possible_moves = self.create_possible_moves()
-    
+
     def __str__(self):
         return '♖' if self.color == 'W' else '♜'
     
@@ -122,7 +126,6 @@ class Pawn(Piece):
     def __init__(self, color, position):
         super().__init__(color, position)
         self.initial = 'P'
-        self.moved = False
         if self.color == 'W':
             self.moves = [[[-2, 0]], [[-1, -1]], [[-1, 0]], [[-1, 1]]]
         else:

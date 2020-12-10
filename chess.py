@@ -22,8 +22,17 @@ class Game:
             else:
                 print (colored('BLACK', 'red'), 'TURN')
             
-            self.board_game.check_mate(player, enemy_player)
-            
+            check = self.board_game.is_check(player, enemy_player)
+            if check == True:
+                print ('WARNING: CHECK!')
+
+                check_mate = self.board_game.is_check_mate(player, enemy_player)
+                if check_mate == True:
+                    print ('ERROR: CHECK MATE!')
+                    # Only for winning conditions:
+                    player = 'W' if player == 'B' else 'B'
+                    break
+
             from_move   = input('ENTER MOVE FROM: ')
             to_move     = input('ENTER MOVE TO: ')
 
@@ -44,4 +53,3 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
-    
