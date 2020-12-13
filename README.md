@@ -10,8 +10,8 @@ In this repository you can find the example solution for chess game in Python
 | Killing Pieces | ✔️ |
 | Check | ✔️ |
 | Checkmate | ✔️ |
-| Small Castle | ❌ |
-| Big Castle | ❌ |
+| Small Castle | ✔️ |
+| Big Castle | ✔️ |
 | Restrict moves | ❌ |
 | Stalemate | ❌ |
 | En passant | ❌ |
