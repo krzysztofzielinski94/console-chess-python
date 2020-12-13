@@ -32,6 +32,12 @@ class Piece:
     def get_player(self):
         return self.color
 
+    def get_moved(self):
+        return self.moved
+
+    def get_initial(self):
+        return self.initial
+
     def __str__(self):
         return self.color + self.initial
 
@@ -53,10 +59,48 @@ class King(Piece):
         self.moves = (
                         [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
                         [[0, -1]], [[0, 1]], 
-                        [[1, -1]], [[1, 0]], [[1, 1]]]
+                        [[1, -1]], [[1, 0]], [[1, 1]],
+                        [[0, -2]], [[0, 2]]
+                        ]
                     )
         self.possible_moves = self.create_possible_moves()
     
+    def update_status(self, position):
+        self.position = position
+        self.moves = (
+                        [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
+                        [[0, -1]], [[0, 1]], 
+                        [[1, -1]], [[1, 0]], [[1, 1]]]
+                    )
+        self.possible_moves = self.create_possible_moves()
+        self.moved = True
+    
+    def update_moves(self, used):
+        if used == 'big':
+            self.moves = (
+                [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
+                [[0, -1]], [[0, 1]], 
+                [[1, -1]], [[1, 0]], [[1, 1]],
+                [[0, 2]]]
+            )
+        
+        elif used == 'small':
+            self.moves = (
+                [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
+                [[0, -1]], [[0, 1]], 
+                [[1, -1]], [[1, 0]], [[1, 1]],
+                [[0, -2]]]
+            )
+        
+        self.possible_moves = self.create_possible_moves()
+
+    def set_default_moves(self):
+        self.moves = (
+            [[[-1, -1]], [[-1, 0]], [[-1, 1]], 
+            [[0, -1]], [[0, 1]], 
+            [[1, -1]], [[1, 0]], [[1, 1]],
+            [[0, -2]], [[0, 2]]])
+
     def __str__(self):
         return '♔' if self.color == 'W' else '♚'
 
